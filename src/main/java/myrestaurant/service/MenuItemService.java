@@ -1,6 +1,12 @@
-package peaksoft.service;
+package myrestaurant.service;
 
+import myrestaurant.dto.request.menuItem.MenuItemRequest;
+import myrestaurant.dto.response.SimpleResponse;
+import myrestaurant.dto.response.menuItem.MenuItemResponse;
+import org.aspectj.weaver.SimpleAnnotationValue;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Restorant
@@ -9,4 +15,13 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public interface MenuItemService {
+    SimpleResponse save(MenuItemRequest menuItemRequest);
+
+    SimpleResponse update(Long menuId, MenuItemRequest menuItemRequest);
+
+    List<MenuItemResponse> getAll();
+
+    SimpleResponse delete(Long menuId);
+
+    List<MenuItemResponse> search(String keyWord);
 }

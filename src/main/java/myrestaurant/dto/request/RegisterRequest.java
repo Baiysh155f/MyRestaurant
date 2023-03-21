@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import myrestaurant.enums.Role;
 
+import java.time.LocalDate;
+
 /**
  * Restorant
  * 2023
@@ -18,7 +20,12 @@ import myrestaurant.enums.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
     private String email;
     private String password;
+    private String phoneNumber;
     private Role role;
+    private int experience;
 }

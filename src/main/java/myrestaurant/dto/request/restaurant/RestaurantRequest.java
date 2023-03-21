@@ -1,4 +1,4 @@
-package myrestaurant.dto.request;
+package myrestaurant.dto.request.restaurant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

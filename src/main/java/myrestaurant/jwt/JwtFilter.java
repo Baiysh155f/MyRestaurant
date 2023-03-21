@@ -1,4 +1,4 @@
-package peaksoft.jwt;
+package myrestaurant.jwt;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
 import jakarta.servlet.FilterChain;

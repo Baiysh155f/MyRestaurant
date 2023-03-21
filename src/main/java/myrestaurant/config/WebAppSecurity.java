@@ -1,6 +1,7 @@
-package peaksoft.config;
+package myrestaurant.config;
 
 import lombok.RequiredArgsConstructor;
+import myrestaurant.repository.EmployeesRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import peaksoft.repository.EmployeesRepository;
-import peaksoft.repository.RestaurantRepository;
 
 import java.util.NoSuchElementException;
 

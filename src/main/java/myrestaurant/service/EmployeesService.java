@@ -1,17 +1,26 @@
-package peaksoft.service;
+package myrestaurant.service;
 
-import org.springframework.stereotype.Service;
-import peaksoft.dto.request.EmployeesRequest;
-import peaksoft.dto.request.RegisterRequest;
-import peaksoft.dto.response.EmployeesResponse;
+import myrestaurant.dto.request.employees.EmployeesRequest;
+import myrestaurant.dto.request.RegisterRequest;
+import myrestaurant.dto.request.employees.ResponseAcceptedEmployee;
+import myrestaurant.dto.response.SimpleResponse;
+import myrestaurant.dto.response.employees.EmployeesResponse;
+
 
 /**
  * Restorant
  * 2023
  * macbook_pro
  **/
-@Service
+
 public interface EmployeesService {
-    EmployeesResponse register(RegisterRequest registerRequest);
+    SimpleResponse register(RegisterRequest registerRequest);
+
     EmployeesResponse authenticate(EmployeesRequest employeesRequest);
+
+    SimpleResponse updateEmployee(Long employeesId, RegisterRequest newEmployees);
+
+    EmployeesResponse acceptEmployee(ResponseAcceptedEmployee responseAcceptedEmployee);
+    SimpleResponse deleteEmployeeBYId(Long employeeId);
+
 }

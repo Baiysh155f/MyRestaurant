@@ -1,4 +1,4 @@
-package myrestaurant.dto.response;
+package myrestaurant.dto.response.employees;
 
 import lombok.*;
 

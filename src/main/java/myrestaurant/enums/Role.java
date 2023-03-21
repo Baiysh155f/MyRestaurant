@@ -1,4 +1,4 @@
-package peaksoft.enums;
+package myrestaurant.enums;
 
 /**
  * Restorant

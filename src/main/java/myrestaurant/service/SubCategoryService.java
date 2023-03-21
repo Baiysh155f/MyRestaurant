@@ -1,6 +1,13 @@
-package peaksoft.service;
+package myrestaurant.service;
 
+import myrestaurant.dto.request.subCategories.SubCategoryRequest;
+import myrestaurant.dto.response.SimpleResponse;
+import myrestaurant.dto.response.categories.CategoryResponsePage;
+import myrestaurant.dto.response.subCategories.SubCategoryResponse;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Restorant
@@ -9,4 +16,13 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public interface SubCategoryService {
+    List<SubCategoryResponse> getAll();
+
+    SimpleResponse save(SubCategoryRequest subCategory);
+
+    SimpleResponse update(Long subCategoryId, SubCategoryRequest subCategory);
+
+    SimpleResponse delete(Long subCategoryId);
+
+    CategoryResponsePage getSubCategoryByCategoryId(Long categoryId, Sort sort);
 }

@@ -1,13 +1,13 @@
-package peaksoft.entity;
+package myrestaurant.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import myrestaurant.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import peaksoft.enums.Role;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -31,28 +31,29 @@ public class Employees implements UserDetails {
     @GeneratedValue(generator = "emp_id_gen",strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotEmpty
+    @Size(max = 32)
     private String firstName;
     @NotEmpty
+    @Size(max = 32)
     private String lastName;
-    @NotEmpty
     private LocalDate dateOfBirth;
-    @NotEmpty
     @Column(unique = true)
     private String email;
     @NotEmpty
     @Size(min = 4)
     private String password;
     @NotEmpty
-    @Size(min = 13,max = 13,message = "phone number mast be 13 number +99655555555")
+    @Size(min = 13,max = 13)
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
     @NotEmpty
     private int experience;
+    private boolean accepted;
     @OneToMany(mappedBy = "employees", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Cheque> cheque;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 

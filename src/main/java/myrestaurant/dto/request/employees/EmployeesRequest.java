@@ -1,4 +1,4 @@
-package myrestaurant.dto.request;
+package myrestaurant.dto.request.employees;
 
 import lombok.*;
 

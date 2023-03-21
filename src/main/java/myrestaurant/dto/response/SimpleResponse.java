@@ -1,12 +1,16 @@
-package peaksoft.dto.response;
+package myrestaurant.dto.response;
+
+import lombok.Builder;
+import org.springframework.http.HttpStatus;
 
 /**
  * Restorant
  * 2023
  * macbook_pro
  **/
+@Builder
 public record SimpleResponse(
-        String status,
+        HttpStatus status,
         String message
 ) {
 }

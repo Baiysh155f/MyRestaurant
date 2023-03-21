@@ -1,4 +1,4 @@
-package myrestaurant.dto.response.categories;
+package myrestaurant.dto.request.categories;
 
 import lombok.*;
 
@@ -12,6 +12,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryResponse {
+public class CategoryRequest {
     private String name;
 }

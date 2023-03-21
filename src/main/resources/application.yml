@@ -1,1 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/java8
+    username: postgres
+    password: 12345
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  jwt:
+    secret_key: 'key'
 
+server:
+  port: 8080
+  error:
+    include-message: always

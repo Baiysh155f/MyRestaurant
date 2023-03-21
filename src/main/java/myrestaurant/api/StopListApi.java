@@ -1,12 +1,11 @@
-package peaksoft.api;
+package myrestaurant.api;
 
+import myrestaurant.dto.request.stopList.StopListRequest;
+import myrestaurant.dto.response.SimpleResponse;
+import myrestaurant.dto.response.stopList.StopListResponse;
+import myrestaurant.service.StopListService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import peaksoft.dto.SimpleResponse;
-import peaksoft.dto.stopList.request.StopListRequest;
-import peaksoft.dto.stopList.response.StopListResponse;
-import peaksoft.entities.StopList;
-import peaksoft.service.StopListService;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @created at 20.03.2023 10:29
  */
 @RestController
-@RequestMapping("/api/{menuItemId}/stopLists")
+@RequestMapping("/api/stopLists")
 public class StopListApi {
     private final StopListService stopListService;
 
@@ -23,27 +22,27 @@ public class StopListApi {
         this.stopListService = stopListService;
     }
 
-    @GetMapping
+    @GetMapping("/{menuItemId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
-    List<StopListResponse> getStopLists(@PathVariable Long menuItemId) {
+    public List<StopListResponse> getStopLists(@PathVariable Long menuItemId) {
         return stopListService.getStopLists(menuItemId);
     }
 
-    @PostMapping
+    @PostMapping("/{menuItemId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
-    SimpleResponse create(@PathVariable Long menuItemId,
-                          @RequestBody StopListRequest stopListRequest) {
+    public SimpleResponse create(@PathVariable Long menuItemId,
+                                 @RequestBody StopListRequest stopListRequest) {
         return stopListService.create(menuItemId, stopListRequest);
     }
 
-    @PutMapping("/{stopListId}")
+    @PutMapping("/{stopListId}/{menuItemId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
-    SimpleResponse update(@PathVariable Long menuItemId,
-                          @PathVariable Long stopListId,
+    SimpleResponse update(@PathVariable Long stopListId,
+                          @PathVariable Long menuItemId,
                           @RequestBody StopListRequest stopListRequest) {
         return stopListService.update(menuItemId, stopListId, stopListRequest);
     }
-    @DeleteMapping("/{stopListId}")
+    @DeleteMapping("/{stopListId}/{menuItemId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     SimpleResponse delete(@PathVariable Long menuItemId,
                           @PathVariable Long stopListId){

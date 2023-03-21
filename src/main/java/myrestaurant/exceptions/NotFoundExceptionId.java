@@ -1,4 +1,4 @@
-package peaksoft.exceptions;
+package myrestaurant.exceptions;
 
 /**
  * Restorant

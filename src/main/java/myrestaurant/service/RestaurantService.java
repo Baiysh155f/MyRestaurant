@@ -1,8 +1,11 @@
-package peaksoft.service;
+package myrestaurant.service;
 
+import myrestaurant.dto.request.restaurant.RestaurantRequest;
+import myrestaurant.dto.response.SimpleResponse;
+import myrestaurant.dto.response.restaurant.RestaurantResponse;
 import org.springframework.stereotype.Service;
-import peaksoft.dto.request.RestaurantRequest;
-import peaksoft.dto.response.RestaurantResponse;
+
+import java.util.List;
 
 /**
  * Restorant
@@ -11,9 +14,10 @@ import peaksoft.dto.response.RestaurantResponse;
  **/
 @Service
 public interface RestaurantService {
-    void saveRestaurant(RestaurantRequest restaurantRequest);
+    SimpleResponse saveRestaurant(RestaurantRequest restaurantRequest);
     RestaurantResponse findByIdRestaurant(Long restaurantId);
-    void updateRestaurant(Long restaurantId,RestaurantRequest restaurantRequest);
+    List<RestaurantResponse> getAllRestaurant();
+    SimpleResponse updateRestaurant(Long restaurantId,RestaurantRequest restaurantRequest);
 
-    void deleteRestaurantById(Long restaurantId);
+    SimpleResponse deleteRestaurantById(Long restaurantId);
 }

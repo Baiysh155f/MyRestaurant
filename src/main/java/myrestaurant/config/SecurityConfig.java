@@ -1,4 +1,4 @@
-package peaksoft.config;
+package myrestaurant.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -7,7 +7,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
-import peaksoft.jwt.JwtFilter;
+import myrestaurant.jwt.JwtFilter;
 
 /**
  * Restorant
@@ -29,7 +29,7 @@ public class SecurityConfig {
         httpSecurity.csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/shgdfg/**")
+                .requestMatchers("/api/employees/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
