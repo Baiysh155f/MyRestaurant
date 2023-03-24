@@ -29,8 +29,8 @@ import java.util.List;
 @EqualsAndHashCode
 public class Employees implements UserDetails {
     @Id
-    @SequenceGenerator(name = "emp_id_gen",sequenceName = "emp_id_seq",allocationSize = 1)
-    @GeneratedValue(generator = "emp_id_gen",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "emp_id_gen", sequenceName = "emp_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "emp_id_gen", strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotEmpty
     @Size(max = 32)
@@ -45,7 +45,7 @@ public class Employees implements UserDetails {
     @Size(min = 4)
     private String password;
     @NotEmpty
-    @Size(min = 13,max = 13)
+    @Size(min = 13, max = 13)
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -68,6 +68,7 @@ public class Employees implements UserDetails {
     public String getUsername() {
         return this.email;
     }
+
     @Override
     public String getPassword() {
         return this.password;

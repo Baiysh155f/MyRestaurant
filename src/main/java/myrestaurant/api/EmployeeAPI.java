@@ -28,14 +28,17 @@ public class EmployeeAPI {
     public EmployeeAPI(EmployeesService employeesService) {
         this.employeesService = employeesService;
     }
+
     @GetMapping
-    public List<EmployeesResponseAll> getAll(){
+    public List<EmployeesResponseAll> getAll() {
         return employeesService.getAll();
     }
+
     @GetMapping("/{employeeId}")
-    public EmployeesResponseAll findBYId(@PathVariable Long employeeId){
+    public EmployeesResponseAll findBYId(@PathVariable Long employeeId) {
         return employeesService.findById(employeeId);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @PostMapping("/register")
     public SimpleResponse register(@RequestBody @Valid RegisterRequest registerRequest) {

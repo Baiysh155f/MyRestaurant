@@ -28,6 +28,8 @@ public class StopListServiceImpl implements StopListService {
 
     @Override
     public List<StopListResponse> getStopLists(Long menuItemId) {
+        menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new NotFoundExceptionId("Menu item with id = " + menuItemId + " is not found!"));
         return stopListRepository.findByMenuItemId(menuItemId);
     }
 
@@ -64,15 +66,15 @@ public class StopListServiceImpl implements StopListService {
         stopList.setDate(stopListRequest.getDate());
         stopList.setMenuItem(menuItem);
         stopListRepository.save(stopList);
-        return new SimpleResponse(HttpStatus.OK, "Stop list created!");
+        return new SimpleResponse(HttpStatus.OK, "Stop list updated!");
     }
 
     @Override
-    public SimpleResponse delete(Long menuItemId, Long stopListId) {
+    public SimpleResponse delete(Long stopListId) {
         if (!stopListRepository.existsById(stopListId)) {
             return SimpleResponse.builder()
                     .status(HttpStatus.BAD_REQUEST)
-                    .message("Stop list with id - " + stopListId + " doesn't exists!")
+                    .message("Stop list with id = " + stopListId + " doesn't exists!")
                     .build();
         }
         StopList stopList = stopListRepository.findById(stopListId).orElseThrow(() ->
@@ -80,7 +82,7 @@ public class StopListServiceImpl implements StopListService {
         stopListRepository.delete(stopList);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)
-                .message("Stop list with id - " + stopListId + " is deleted!")
+                .message("Stop list with id = " + stopListId + " is deleted!")
                 .build();
     }
 }

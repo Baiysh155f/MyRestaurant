@@ -17,18 +17,23 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
             "(m.id, m.name, m.images, m.price, m.description, m.isVegetarian) " +
             "from MenuItem m join m.stopList s where s.date != current date ")
     List<MenuItemResponse> getAllMenuItems();
+
     List<MenuItemResponse> getAllByStopListNull();
+
     @Query("select new myrestaurant.dto.response.menuItem.MenuItemResponse" +
             "(m.id, m.name, m.images, m.price, m.description, m.isVegetarian) " +
             "from MenuItem m where m.name ilike concat('%', :keyWord, '%') or m.description " +
             "ilike concat('%', :keyWord, '%') or m.subCategory.name ilike concat('%', :keyWord, '%')" +
             " or m.subCategory.category.name ilike concat('%', :keyWord, '%')")
     List<MenuItemResponse> searchAllByKeyWord(String keyWord);
+
     @Query("select new myrestaurant.dto.response.menuItem.MenuItemResponse(m.id,m.name,m.images,m.price,m.description,m.isVegetarian) from MenuItem m order by m.price asc")
     List<MenuItemResponse> getAllByOrderByPriceAsc();
+
     @Query("select new myrestaurant.dto.response.menuItem.MenuItemResponse(m.id,m.name,m.images,m.price,m.description,m.isVegetarian) from MenuItem m order by m.price desc")
     List<MenuItemResponse> getAllByOrderByPriceDesc();
 
     @Override
     Page<MenuItem> findAll(Pageable pageable);
+
 }

@@ -5,9 +5,12 @@ import myrestaurant.dto.request.menuItem.MenuItemRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.menuItem.MenuItemResponse;
 import myrestaurant.dto.response.pagination.PaginationResponse;
+import myrestaurant.entity.MenuItem;
 import myrestaurant.service.MenuItemService;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuItemAPI {
     private final MenuItemService menuItemService;
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/getAll")
     public List<MenuItemResponse> getAll() {
@@ -50,25 +54,29 @@ public class MenuItemAPI {
     public List<MenuItemResponse> search(@PathVariable String keyWord) {
         return menuItemService.search(keyWord);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/asc")
-    public List<MenuItemResponse> sortAsc(){
+    public List<MenuItemResponse> sortAsc() {
         return menuItemService.getAllByOrderByPriceAsc();
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/desc")
-    public List<MenuItemResponse> sortDesc(){
+    public List<MenuItemResponse> sortDesc() {
         return menuItemService.getAllByOrderByPriceDesc();
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/vegetarian/{isTrue}")
-    public List<MenuItemResponse> vegetarianTrueOrFalse(@PathVariable Boolean isTrue){
+    public List<MenuItemResponse> vegetarianTrueOrFalse(@PathVariable Boolean isTrue) {
         return menuItemService.findMenuItemByVegetarianTrueOrFalse(isTrue);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/pagination")
-    public PaginationResponse getManuItemsPagination(@RequestParam int page,
-                                                    @RequestParam int size) {
-        return menuItemService.getMenuItemPagination(page,size);
+    public Page<MenuItem> getManuItemsPagination(@RequestParam int page,
+                                                 @RequestParam int size) {
+        return menuItemService.findMenuItemsWithPagination(page, size);
     }
 }

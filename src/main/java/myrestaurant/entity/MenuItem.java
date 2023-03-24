@@ -18,7 +18,8 @@ import java.util.List;
  * 2023
  * macbook_pro
  **/
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "menu_items")

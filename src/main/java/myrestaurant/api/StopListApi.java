@@ -22,8 +22,8 @@ public class StopListApi {
         this.stopListService = stopListService;
     }
 
-    @GetMapping("/{menuItemId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
+    @GetMapping("/{menuItemId}")
     public List<StopListResponse> getStopLists(@PathVariable Long menuItemId) {
         return stopListService.getStopLists(menuItemId);
     }
@@ -42,10 +42,10 @@ public class StopListApi {
                           @RequestBody StopListRequest stopListRequest) {
         return stopListService.update(menuItemId, stopListId, stopListRequest);
     }
-    @DeleteMapping("/{stopListId}/{menuItemId}")
+
+    @DeleteMapping("/{stopListId}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
-    SimpleResponse delete(@PathVariable Long menuItemId,
-                          @PathVariable Long stopListId){
-        return stopListService.delete(menuItemId, stopListId);
+    SimpleResponse delete(@PathVariable Long stopListId) {
+        return stopListService.delete(stopListId);
     }
 }

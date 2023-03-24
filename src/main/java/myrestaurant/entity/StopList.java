@@ -23,8 +23,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class StopList {
     @Id
-    @SequenceGenerator(name = "stop_id_gen",sequenceName = "stop_id_seq",allocationSize = 1)
-    @GeneratedValue(generator = "stop_id_gen",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "stop_id_gen", sequenceName = "stop_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "stop_id_gen", strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotEmpty
     private String reason;

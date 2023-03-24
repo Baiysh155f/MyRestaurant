@@ -22,27 +22,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantAPI {
     private final RestaurantServiceImpl restaurantService;
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public SimpleResponse saveRestaurant(@RequestBody RestaurantRequest restaurantRequest) {
         return restaurantService.saveRestaurant(restaurantRequest);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping
     public List<RestaurantResponse> getAll() {
         return restaurantService.getAllRestaurant();
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/{restaurantId}")
     public RestaurantResponse getByIdRestaurant(@PathVariable Long restaurantId) {
         return restaurantService.findByIdRestaurant(restaurantId);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{restaurantId}")
     public SimpleResponse updateRestaurant(@PathVariable Long restaurantId,
                                            @RequestBody RestaurantRequest restaurantRequest) {
         return restaurantService.updateRestaurant(restaurantId, restaurantRequest);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{restaurantId}")
     public SimpleResponse deleteRestaurant(@PathVariable Long restaurantId) {

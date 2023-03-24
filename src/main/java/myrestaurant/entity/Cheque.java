@@ -2,6 +2,7 @@ package myrestaurant.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,12 @@ import java.util.List;
 @EqualsAndHashCode
 public class Cheque {
     @Id
-    @SequenceGenerator(name = "cheque_id_gen",sequenceName = "cheque_id_seq")
-    @GeneratedValue(generator = "cheque_id_gen",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "cheque_id_gen", sequenceName = "cheque_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "cheque_id_gen", strategy = GenerationType.SEQUENCE)
     private Long id;
-    @NotEmpty
+    @NotNull
     private BigDecimal priceAverage;
-    @NotEmpty
+    @NotNull
     private LocalDate createAt;
     @ManyToOne
     private Employees employees;

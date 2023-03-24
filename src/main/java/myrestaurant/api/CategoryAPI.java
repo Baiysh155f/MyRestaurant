@@ -30,22 +30,26 @@ public class CategoryAPI {
     private List<CategoryResponse> getAll() {
         return categoryService.getAll();
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @GetMapping("/{categoryId}")
     public Category findByIdCategory(@PathVariable Long categoryId) {
         return categoryService.getById(categoryId);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @PostMapping
     public SimpleResponse saveCategory(@RequestBody CategoryRequest category) {
         return categoryService.saveCategory(category);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @PutMapping("/{categoryId}")
     public SimpleResponse updateCategory(@PathVariable Long categoryId,
                                          @RequestBody CategoryRequest category) {
         return categoryService.updateCategory(categoryId, category);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @DeleteMapping("/{categoryId}")
     public SimpleResponse deleteCategory(@PathVariable Long categoryId) {

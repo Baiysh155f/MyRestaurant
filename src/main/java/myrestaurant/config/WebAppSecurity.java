@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 public class WebAppSecurity {
     private final EmployeesRepository employeesRepository;
 
-    public WebAppSecurity( EmployeesRepository employeesRepository) {
+    public WebAppSecurity(EmployeesRepository employeesRepository) {
         this.employeesRepository = employeesRepository;
     }
 
@@ -49,8 +49,9 @@ public class WebAppSecurity {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
+
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
 
     }

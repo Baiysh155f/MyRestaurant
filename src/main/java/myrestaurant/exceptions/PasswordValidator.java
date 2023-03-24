@@ -8,9 +8,9 @@ import jakarta.validation.ConstraintValidatorContext;
  * 2023
  * macbook_pro
  **/
-public class PasswordValidator implements ConstraintValidator<PasswordValid,String> {
+public class PasswordValidator implements ConstraintValidator<PasswordValid, String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return s.length()>4;
+        return s.length() > 4;
     }
 }

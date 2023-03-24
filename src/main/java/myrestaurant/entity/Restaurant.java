@@ -25,8 +25,8 @@ import java.util.List;
 @EqualsAndHashCode
 public class Restaurant {
     @Id
-    @SequenceGenerator(name = "res_id_gen",sequenceName = "res_id_seq",allocationSize = 1)
-    @GeneratedValue(generator = "res_id_gen",strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "res_id_gen", sequenceName = "res_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "res_id_gen", strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotEmpty
     @Size(max = 32)
@@ -39,8 +39,8 @@ public class Restaurant {
     private int numberOfEmployees;
     @NotNull
     private int service;
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employees> employees = new ArrayList<>();
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MenuItem> menuItem = new ArrayList<>();
 }

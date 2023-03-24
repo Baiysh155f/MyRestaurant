@@ -1,6 +1,5 @@
 package myrestaurant.service.impl;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.RequiredArgsConstructor;
 import myrestaurant.dto.request.menuItem.MenuItemRequest;
 import myrestaurant.dto.response.SimpleResponse;
@@ -106,26 +105,35 @@ public class MenuItemServiceIml implements MenuItemService {
 
     @Override
     public List<MenuItemResponse> findMenuItemByVegetarianTrueOrFalse(Boolean trueOrFalse) {
-            List<MenuItemResponse> menuItems = new ArrayList<>();
-            List<MenuItem> items = menuItemRepository.findAll();
-            for (MenuItem item : items) {
-                if (item.isVegetarian() == trueOrFalse) {
-                    menuItems.add(new MenuItemResponse(item.getId(), item.getName(), item.getImages(), item.getPrice(), item.getDescription(), item.isVegetarian()));
-                }
+        List<MenuItemResponse> menuItems = new ArrayList<>();
+        List<MenuItem> items = menuItemRepository.findAll();
+        for (MenuItem item : items) {
+            if (item.isVegetarian() == trueOrFalse) {
+                menuItems.add(new MenuItemResponse(item.getId(),
+                        item.getName(),
+                        item.getImages(),
+                        item.getPrice(),
+                        item.getDescription(),
+                        item.isVegetarian()));
             }
-            return menuItems;
         }
+        return menuItems;
+    }
+
+//    @Override
+//    public PaginationResponse getMenuItemPagination(int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<MenuItem> pageManu = menuItemRepository.findAll(pageable);
+//        PaginationResponse paginationResponse = new PaginationResponse();
+//        paginationResponse.setMenuItems(pageManu.getContent());
+//        paginationResponse.setCurrentPage(pageable.getPageNumber());
+//        paginationResponse.setPageSize(pageManu.getTotalPages());
+//        return paginationResponse;
+//    }
 
     @Override
-    public PaginationResponse getMenuItemPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page,size);
-
-        Page<MenuItem> pageManu = menuItemRepository.findAll(pageable);
-        PaginationResponse paginationResponse = new PaginationResponse();
-        paginationResponse.setMenuItems(pageManu.getContent());
-        paginationResponse.setCurrentPage(pageable.getPageNumber());
-        paginationResponse.setPageSize(pageManu.getTotalPages());
-        return paginationResponse;
+    public Page<MenuItem> findMenuItemsWithPagination(int offset, int pageSize) {
+        return menuItemRepository.findAll(PageRequest.of(offset, pageSize));
     }
 
 }

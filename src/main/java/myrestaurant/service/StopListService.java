@@ -20,5 +20,5 @@ public interface StopListService {
 
     SimpleResponse update(Long menuItemId, Long stopListId, StopListRequest stopListRequest);
 
-    SimpleResponse delete(Long menuItemId, Long stopListId);
+    SimpleResponse delete(Long stopListId);
 }

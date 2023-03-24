@@ -4,6 +4,8 @@ import myrestaurant.dto.request.menuItem.MenuItemRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.menuItem.MenuItemResponse;
 import myrestaurant.dto.response.pagination.PaginationResponse;
+import myrestaurant.entity.MenuItem;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +27,12 @@ public interface MenuItemService {
     SimpleResponse delete(Long menuId);
 
     List<MenuItemResponse> search(String keyWord);
+
     List<MenuItemResponse> getAllByOrderByPriceAsc();
+
     List<MenuItemResponse> getAllByOrderByPriceDesc();
+
     List<MenuItemResponse> findMenuItemByVegetarianTrueOrFalse(Boolean isTrue);
-    PaginationResponse getMenuItemPagination(int page, int size);
+
+    public Page<MenuItem> findMenuItemsWithPagination(int offset, int pageSize);
 }

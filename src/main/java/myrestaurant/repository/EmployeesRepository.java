@@ -15,11 +15,16 @@ import java.util.Optional;
 @Repository
 public interface EmployeesRepository extends JpaRepository<Employees, Long> {
     Optional<Employees> findByEmail(String email);
+
     Optional<Employees> findByRole(Role role);
+
     Boolean existsByRole(Role role);
+
     Boolean existsByEmail(String email);
+
     @Override
     Page<Employees> findAll(Pageable pageable);
+
     @Query("select new myrestaurant.dto.response.employees.EmployeesResponseAll(e.id,e.firstName,e.lastName,e.dateOfBirth,e.email,e.password,e.phoneNumber,e.role,e.experience,e.accepted) from Employees e")
     List<EmployeesResponseAll> getAll();
 

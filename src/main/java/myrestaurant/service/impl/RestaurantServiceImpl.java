@@ -40,7 +40,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setService(restaurantRequest.getService());
         restaurant.setNumberOfEmployees(1);
         Employees employees = employeesRepository.findByRole(Role.ADMIN)
-                .orElseThrow(()-> new NotFoundExceptionId("Not found Admin"));
+                .orElseThrow(() -> new NotFoundExceptionId("Not found Admin"));
         employees.setRestaurant(restaurant);
         restaurantRepository.save(restaurant);
         return SimpleResponse.builder()
@@ -56,7 +56,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<RestaurantResponse> getAllRestaurant() {
-          return restaurantRepository.findAllRestaurant();
+        return restaurantRepository.findAllRestaurant();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setService(restaurantRequest.getService());
         restaurant.setLocation(restaurantRequest.getLocation());
         Employees byEmail = employeesRepository.findByEmail("admin2gmail.com")
-                .orElseThrow(()-> new NotFoundExceptionId("Not found this email id"));
+                .orElseThrow(() -> new NotFoundExceptionId("Not found this email id"));
         restaurant.getEmployees().add(byEmail);
         restaurantRepository.save(restaurant);
         return SimpleResponse.builder()
