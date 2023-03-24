@@ -38,6 +38,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setLocation(restaurantRequest.getLocation());
         restaurant.setRestType(restaurantRequest.getRestType());
         restaurant.setService(restaurantRequest.getService());
+        restaurant.setNumberOfEmployees(1);
         Employees employees = employeesRepository.findByRole(Role.ADMIN)
                 .orElseThrow(()-> new NotFoundExceptionId("Not found Admin"));
         employees.setRestaurant(restaurant);

@@ -5,6 +5,9 @@ import myrestaurant.dto.request.RegisterRequest;
 import myrestaurant.dto.request.employees.ResponseAcceptedEmployee;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.employees.EmployeesResponse;
+import myrestaurant.dto.response.employees.EmployeesResponseAll;
+
+import java.util.List;
 
 
 /**
@@ -20,7 +23,11 @@ public interface EmployeesService {
 
     SimpleResponse updateEmployee(Long employeesId, RegisterRequest newEmployees);
 
-    EmployeesResponse acceptEmployee(ResponseAcceptedEmployee responseAcceptedEmployee);
+    SimpleResponse acceptEmployee(ResponseAcceptedEmployee responseAcceptedEmployee);
+
     SimpleResponse deleteEmployeeBYId(Long employeeId);
 
+    List<EmployeesResponseAll> getAll();
+
+    EmployeesResponseAll findById(Long employeeId);
 }

@@ -2,7 +2,9 @@ package myrestaurant.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "menu_items")
+@EqualsAndHashCode
 public class MenuItem {
     @Id
     @SequenceGenerator(
@@ -37,7 +40,7 @@ public class MenuItem {
     private String name;
     @NotEmpty
     private String images;
-    @NotEmpty
+    @NotNull
     private BigDecimal price;
     @NotEmpty
     private String description;
@@ -53,8 +56,8 @@ public class MenuItem {
             inverseJoinColumns = @JoinColumn(name = "cheques_id"))
     private List<Cheque> cheques = new ArrayList<>();
 
-    @OneToOne(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private StopList stopList ;
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StopList> stopList = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "subcategory_id")

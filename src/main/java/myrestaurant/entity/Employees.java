@@ -2,6 +2,7 @@ package myrestaurant.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import myrestaurant.enums.Role;
@@ -25,6 +26,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class Employees implements UserDetails {
     @Id
     @SequenceGenerator(name = "emp_id_gen",sequenceName = "emp_id_seq",allocationSize = 1)
@@ -47,7 +49,7 @@ public class Employees implements UserDetails {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @NotEmpty
+    @NotNull
     private int experience;
     private boolean accepted;
     @OneToMany(mappedBy = "employees", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})

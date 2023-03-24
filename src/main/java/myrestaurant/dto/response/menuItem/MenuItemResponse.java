@@ -1,9 +1,6 @@
 package myrestaurant.dto.response.menuItem;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -16,10 +13,12 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuItemResponse {
-    private String name;
-    private String images;
-    private BigDecimal price;
-    private String description;
-    private boolean isVegetarian;
+@Builder
+public class MenuItemResponse{
+       private Long id;
+       private String name;
+       private String images;
+       private BigDecimal price;
+       private String description;
+       private boolean isVegetarian;
 }

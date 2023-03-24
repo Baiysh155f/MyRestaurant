@@ -4,7 +4,7 @@ import myrestaurant.dto.request.subCategories.SubCategoryRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.categories.CategoryResponsePage;
 import myrestaurant.dto.response.subCategories.SubCategoryResponse;
-import org.springframework.data.domain.Sort;
+import myrestaurant.entity.SubCategory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,5 +24,5 @@ public interface SubCategoryService {
 
     SimpleResponse delete(Long subCategoryId);
 
-    CategoryResponsePage getSubCategoryByCategoryId(Long categoryId, Sort sort);
+    CategoryResponsePage getSubCategoryByCategoryId(Long categoryId);
 }

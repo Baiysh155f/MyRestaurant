@@ -5,12 +5,14 @@ import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.request.categories.CategoryRequest;
 import myrestaurant.dto.response.categories.CategoryResponse;
 import myrestaurant.entity.Category;
+import myrestaurant.repository.CategoryRepository;
 import myrestaurant.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * MyRestaurant
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryAPI {
     private final CategoryService categoryService;
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping
     private List<CategoryResponse> getAll() {

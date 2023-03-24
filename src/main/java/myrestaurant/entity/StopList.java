@@ -3,6 +3,7 @@ package myrestaurant.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "stop_lists")
+@EqualsAndHashCode
 public class StopList {
     @Id
     @SequenceGenerator(name = "stop_id_gen",sequenceName = "stop_id_seq",allocationSize = 1)
@@ -26,8 +28,7 @@ public class StopList {
     private Long id;
     @NotEmpty
     private String reason;
-    @NotEmpty
     private LocalDate date;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private MenuItem menuItem;
 }

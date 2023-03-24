@@ -62,17 +62,20 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public SimpleResponse delete(Long subCategoryId) {
-        subCategoryRepository.deleteById(subCategoryId);
+        SubCategory category = subCategoryRepository.findById(subCategoryId)
+                .orElseThrow(() -> new NotFoundExceptionId("This SubCategory = " + subCategoryId + " not found!!!"));
+        subCategoryRepository.delete(category);
         return SimpleResponse.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .message("DELETED...").build();
     }
 
     @Override
-    public CategoryResponsePage getSubCategoryByCategoryId(Long categoryId,Sort sort) {
+    public CategoryResponsePage getSubCategoryByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundExceptionId("This category = " + categoryId + " not found!!!"));
-        List<SubCategoryResponse> subCategoryByCategoryId = subCategoryRepository.getAllByCategoryId(category.getId());
+        List<SubCategoryResponse> subCategoryByCategoryId =
+                subCategoryRepository.getSubCategoryByOrderByNameAsAndByCategoryId(category.getId());
         return CategoryResponsePage.builder()
                 .name(category.getName())
                 .subCategories(subCategoryByCategoryId)

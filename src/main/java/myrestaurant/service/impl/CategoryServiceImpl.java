@@ -12,6 +12,7 @@ import myrestaurant.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryResponse> getAll() {
-        return categoryRepository.getAllBySubCategory();
+        List<CategoryResponse> categoryResponses = new ArrayList<>();
+        List<Category> all = categoryRepository.findAll();
+        for (Category category : all) {
+            CategoryResponse categoryResponse = new CategoryResponse();
+            categoryResponse.setName(category.getName());
+            categoryResponses.add(categoryResponse);
+        }
+        return categoryResponses;
     }
 
     @Override

@@ -3,7 +3,7 @@ package myrestaurant.service;
 import myrestaurant.dto.request.menuItem.MenuItemRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.menuItem.MenuItemResponse;
-import org.aspectj.weaver.SimpleAnnotationValue;
+import myrestaurant.dto.response.pagination.PaginationResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 public interface MenuItemService {
     SimpleResponse save(MenuItemRequest menuItemRequest);
 
+
     SimpleResponse update(Long menuId, MenuItemRequest menuItemRequest);
 
     List<MenuItemResponse> getAll();
@@ -24,4 +25,8 @@ public interface MenuItemService {
     SimpleResponse delete(Long menuId);
 
     List<MenuItemResponse> search(String keyWord);
+    List<MenuItemResponse> getAllByOrderByPriceAsc();
+    List<MenuItemResponse> getAllByOrderByPriceDesc();
+    List<MenuItemResponse> findMenuItemByVegetarianTrueOrFalse(Boolean isTrue);
+    PaginationResponse getMenuItemPagination(int page, int size);
 }

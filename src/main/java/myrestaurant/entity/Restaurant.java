@@ -2,7 +2,9 @@ package myrestaurant.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +22,7 @@ import java.util.List;
 @Entity
 @Table(name = "restaurants")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Restaurant {
     @Id
     @SequenceGenerator(name = "res_id_gen",sequenceName = "res_id_seq",allocationSize = 1)
@@ -32,10 +35,9 @@ public class Restaurant {
     private String location;
     @NotEmpty
     private String restType;
-    @NotEmpty
-    @Size(max = 15,min = 1)
+    @NotNull
     private int numberOfEmployees;
-    @NotEmpty
+    @NotNull
     private int service;
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Employees> employees = new ArrayList<>();

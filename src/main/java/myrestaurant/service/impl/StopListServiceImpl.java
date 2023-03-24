@@ -35,8 +35,10 @@ public class StopListServiceImpl implements StopListService {
     public SimpleResponse create(Long menuItemId, StopListRequest stopListRequest) {
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new NotFoundExceptionId("Menu item with id = " + menuItemId + " is not found!"));
-        if (menuItem.getStopList().getDate().equals(stopListRequest.getDate())) {
-            return new SimpleResponse(HttpStatus.BAD_REQUEST, "Stop list for this day already exists!");
+        for (StopList stopList : menuItem.getStopList()) {
+            if (stopList.getDate().equals(stopListRequest.getDate())) {
+                return new SimpleResponse(HttpStatus.BAD_REQUEST, "Stop list for this day already exists!");
+            }
         }
         StopList stopList = new StopList();
         stopList.setReason(stopListRequest.getReason());
@@ -44,7 +46,6 @@ public class StopListServiceImpl implements StopListService {
         stopList.setMenuItem(menuItem);
         stopListRepository.save(stopList);
         return new SimpleResponse(HttpStatus.OK, "Stop list created!");
-
     }
 
     @Override
@@ -52,8 +53,10 @@ public class StopListServiceImpl implements StopListService {
 
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new NotFoundExceptionId("Menu item with id = " + menuItemId + " is not found!"));
-        if (menuItem.getStopList().getDate().equals(stopListRequest.getDate())) {
-            return new SimpleResponse(HttpStatus.BAD_REQUEST, "Stop list for this day already exists!");
+        for (StopList stopList : menuItem.getStopList()) {
+            if (stopList.getDate().equals(stopListRequest.getDate())) {
+                return new SimpleResponse(HttpStatus.BAD_REQUEST, "Stop list for this day already exists!");
+            }
         }
         StopList stopList = stopListRepository.findById(stopListId)
                 .orElseThrow(() -> new NotFoundExceptionId("StopList with id = " + menuItemId + " is not found!"));
@@ -62,8 +65,6 @@ public class StopListServiceImpl implements StopListService {
         stopList.setMenuItem(menuItem);
         stopListRepository.save(stopList);
         return new SimpleResponse(HttpStatus.OK, "Stop list created!");
-
-
     }
 
     @Override
