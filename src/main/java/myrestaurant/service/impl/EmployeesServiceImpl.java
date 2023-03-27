@@ -9,6 +9,7 @@ import myrestaurant.dto.request.employees.ResponseAcceptedEmployee;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.employees.EmployeesResponse;
 import myrestaurant.dto.response.employees.EmployeesResponseAll;
+import myrestaurant.entity.Cheque;
 import myrestaurant.entity.Employees;
 import myrestaurant.enums.Role;
 import myrestaurant.exceptions.ExistsElementException;
@@ -177,7 +178,7 @@ public class EmployeesServiceImpl implements EmployeesService {
     public SimpleResponse acceptEmployee(ResponseAcceptedEmployee responseAcceptedEmployee) {
         Employees employees = employeesRepository.findById(responseAcceptedEmployee.getEmployeeId())
                 .orElseThrow(() -> new NotFoundExceptionId(String.format("User id =  %s is not found!", responseAcceptedEmployee.getEmployeeId())));
-        if (employees.isAccepted() == responseAcceptedEmployee.isAccept()) {
+        if (employees.isAccepted() == responseAcceptedEmployee.getAccept()) {
             employeesRepository.deleteById(responseAcceptedEmployee.getEmployeeId());
             return SimpleResponse.builder()
                     .status(HttpStatus.BAD_REQUEST)
@@ -199,6 +200,9 @@ public class EmployeesServiceImpl implements EmployeesService {
         Employees employees = employeesRepository.findById(employeeId)
                 .orElseThrow(() ->
                         new NotFoundExceptionId(String.format("User id = %s is not found!", employeeId)));
+        for (Cheque cheque : employees.getCheque()) {
+            cheque.setEmployees(null);
+        }
         employeesRepository.delete(employees);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)

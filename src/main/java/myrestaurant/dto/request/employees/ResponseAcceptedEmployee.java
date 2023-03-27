@@ -16,5 +16,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResponseAcceptedEmployee {
     private Long employeeId;
-    private boolean accept;
+    private Boolean accept;
 }

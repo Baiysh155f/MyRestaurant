@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.request.categories.CategoryRequest;
 import myrestaurant.dto.response.categories.CategoryResponse;
+import myrestaurant.dto.response.categories.CategoryResponsePage;
 import myrestaurant.entity.Category;
 import myrestaurant.repository.CategoryRepository;
 import myrestaurant.service.CategoryService;
@@ -27,13 +28,13 @@ public class CategoryAPI {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping
-    private List<CategoryResponse> getAll() {
+    public List<CategoryResponse> getAll() {
         return categoryService.getAll();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @GetMapping("/{categoryId}")
-    public Category findByIdCategory(@PathVariable Long categoryId) {
+    public CategoryResponsePage findByIdCategory(@PathVariable Long categoryId) {
         return categoryService.getById(categoryId);
     }
 

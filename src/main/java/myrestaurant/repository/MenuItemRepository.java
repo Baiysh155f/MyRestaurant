@@ -33,7 +33,9 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     @Query("select new myrestaurant.dto.response.menuItem.MenuItemResponse(m.id,m.name,m.images,m.price,m.description,m.isVegetarian) from MenuItem m order by m.price desc")
     List<MenuItemResponse> getAllByOrderByPriceDesc();
 
+//    @Query("select new myrestaurant.dto.response.menuItem.MenuItemResponse(m.id,m.name,m.images,m.price,m.description,m.isVegetarian) from MenuItem m")
+
+
     @Override
     Page<MenuItem> findAll(Pageable pageable);
-
 }

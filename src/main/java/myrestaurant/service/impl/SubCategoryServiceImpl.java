@@ -81,4 +81,9 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                 .subCategories(subCategoryByCategoryId)
                 .build();
     }
+
+    @Override
+    public List<SubCategoryResponse> findAllSorting(String name) {
+        return subCategoryRepository.getAll(Sort.by(name));
+    }
 }

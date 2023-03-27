@@ -3,6 +3,7 @@ package myrestaurant.service;
 import myrestaurant.dto.request.categories.CategoryRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.categories.CategoryResponse;
+import myrestaurant.dto.response.categories.CategoryResponsePage;
 import myrestaurant.entity.Category;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface CategoryService {
     List<CategoryResponse> getAll();
 
-    Category getById(Long categoryId);
+    CategoryResponsePage getById(Long categoryId);
 
     SimpleResponse saveCategory(CategoryRequest category);
 

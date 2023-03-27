@@ -63,6 +63,9 @@ public class ChequeServiceImpl implements ChequeService {
         Cheque cheque = chequeRepository.findById(chequeId)
                 .orElseThrow(() -> new NotFoundExceptionId("Cheque id = " + chequeId + " mot found..."));
         List<MenuItem> allById = menuItemRepository.findAllById(chequeRequest.getMenuItemsId());
+        for (MenuItem menuItem : cheque.getMenuItem()) {
+            menuItem.getCheques().remove(cheque);
+        }
         cheque.setCreateAt(LocalDate.now());
         BigDecimal average = new BigDecimal(0);
         for (MenuItem menuItem : allById) {
@@ -110,51 +113,52 @@ public class ChequeServiceImpl implements ChequeService {
 
     @Override
     public EmployeesDailyTotalResponse employeesDailyTotal(Long employeeId, LocalDate date) {
-        Long sum = 0L;
+
+        long allSum = 0L;
         int service = 1;
         Employees employees = employeesRepository.findById(employeeId)
                 .orElseThrow(() -> new NotFoundExceptionId("Cheque id = " + employeeId + " mot found..."));
         for (Cheque cheque : employees.getCheque()) {
             if (cheque.getCreateAt().equals(date)) {
                 for (MenuItem menuItem : cheque.getMenuItem()) {
-                    sum = +menuItem.getPrice().longValue();
+                    allSum = new BigDecimal((int) allSum + menuItem.getPrice().intValue()).longValue();
                     service = menuItem.getRestaurant().getService();
+
                 }
             } else {
                 throw new NotFoundExceptionId("Not found cheque date = " + date);
             }
         }
-        BigDecimal allSum = new BigDecimal(sum);
-        BigDecimal totalSum = allSum.multiply(new BigDecimal(service)).divide(new BigDecimal(100));
+        long total = allSum * service / 100 + allSum;
+
         return EmployeesDailyTotalResponse.builder()
                 .employeeName(employees.getFirstName())
                 .date(date)
-                .allSum(totalSum)
+                .allSum(BigDecimal.valueOf(total))
                 .build();
     }
 
     @Override
     public RestaurantDailyTotalChequeResponse restaurantDailyTotalCheque(Long restaurantId, LocalDate localDate) {
-        Long cheques = 0L;
+        long cheques = 0L;
         int service = 1;
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundExceptionId("Restaurant id = " + restaurantId + " mot found..."));
-        service = +restaurant.getService();
         for (MenuItem menuItem : restaurant.getMenuItem()) {
             for (Cheque cheque : menuItem.getCheques()) {
                 if (cheque.getCreateAt().equals(localDate)) {
-                    cheques = +cheque.getPriceAverage().longValue();
+                    cheques = new BigDecimal((int) cheques + cheque.getPriceAverage().intValue()).longValue();
+                    service = menuItem.getRestaurant().getService();
                 } else {
                     throw new NotFoundExceptionId("Not found cheque date = " + localDate);
                 }
             }
         }
-        BigDecimal allSum = new BigDecimal(cheques);
-        BigDecimal totalSum = allSum.multiply(new BigDecimal(service)).divide(new BigDecimal(100));
+        long totalSum = cheques * service / 100 + cheques;
         return RestaurantDailyTotalChequeResponse.builder()
                 .resName(restaurant.getName())
                 .date(localDate)
-                .totalSumDaily(totalSum)
+                .totalSumDaily(BigDecimal.valueOf(totalSum))
                 .build();
     }
 

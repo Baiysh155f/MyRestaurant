@@ -4,8 +4,6 @@ import myrestaurant.dto.request.menuItem.MenuItemRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.menuItem.MenuItemResponse;
 import myrestaurant.dto.response.pagination.PaginationResponse;
-import myrestaurant.entity.MenuItem;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,5 +32,5 @@ public interface MenuItemService {
 
     List<MenuItemResponse> findMenuItemByVegetarianTrueOrFalse(Boolean isTrue);
 
-    public Page<MenuItem> findMenuItemsWithPagination(int offset, int pageSize);
+    PaginationResponse findMenuItemsWithPagination(int offset, int pageSize);
 }

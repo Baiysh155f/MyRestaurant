@@ -7,19 +7,19 @@ import myrestaurant.dto.response.menuItem.MenuItemResponse;
 import myrestaurant.dto.response.pagination.PaginationResponse;
 import myrestaurant.entity.MenuItem;
 import myrestaurant.entity.Restaurant;
+import myrestaurant.entity.StopList;
 import myrestaurant.entity.SubCategory;
 import myrestaurant.exceptions.NotFoundExceptionId;
-import myrestaurant.repository.CategoryRepository;
-import myrestaurant.repository.MenuItemRepository;
-import myrestaurant.repository.RestaurantRepository;
-import myrestaurant.repository.SubCategoryRepository;
+import myrestaurant.repository.*;
 import myrestaurant.service.MenuItemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class MenuItemServiceIml implements MenuItemService {
     private final RestaurantRepository restaurantRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final CategoryRepository categoryRepository;
+    private final StopListRepository stopListRepository;
 
     @Override
     public SimpleResponse save(MenuItemRequest menuItemRequest) {
@@ -120,20 +121,35 @@ public class MenuItemServiceIml implements MenuItemService {
         return menuItems;
     }
 
-//    @Override
-//    public PaginationResponse getMenuItemPagination(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<MenuItem> pageManu = menuItemRepository.findAll(pageable);
-//        PaginationResponse paginationResponse = new PaginationResponse();
-//        paginationResponse.setMenuItems(pageManu.getContent());
-//        paginationResponse.setCurrentPage(pageable.getPageNumber());
-//        paginationResponse.setPageSize(pageManu.getTotalPages());
-//        return paginationResponse;
-//    }
-
     @Override
-    public Page<MenuItem> findMenuItemsWithPagination(int offset, int pageSize) {
-        return menuItemRepository.findAll(PageRequest.of(offset, pageSize));
+    public PaginationResponse findMenuItemsWithPagination(int offset, int pageSize) {
+        List<MenuItem> menuItemStopList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(offset, pageSize, Sort.by("price"));
+        Page<MenuItem> allPageable = menuItemRepository.findAll(pageable);
+        for (MenuItem menuItem : allPageable) {
+            for (StopList stopList : menuItem.getStopList()) {
+                if (stopList.getDate().equals(LocalDate.now())) {
+                    MenuItem menuItem1 = menuItemRepository.findById(stopList.getMenuItem().getId())
+                            .orElseThrow(() -> new NotFoundExceptionId("Menu this id = " + stopList.getMenuItem().getId() + " not found"));
+                    menuItemStopList.add(menuItem1);
+                }
+            }
+        }
+        List<MenuItemResponse> menuItemResponses = new ArrayList<>(allPageable.stream().
+                map(m -> new MenuItemResponse(m.getId(),
+                        m.getName(),
+                        m.getImages(),
+                        m.getPrice(),
+                        m.getDescription(),
+                        m.isVegetarian())).toList());
+        for (MenuItem menuItem : menuItemStopList) {
+            menuItemResponses.removeIf(menuItemRespons -> menuItemRespons.getId().equals(menuItem.getId()));
+        }
+        PaginationResponse response = new PaginationResponse();
+        response.setMenuItems(menuItemResponses);
+        response.setCurrentPage(allPageable.getNumber());
+        response.setPageSize(allPageable.getSize());
+        return response;
     }
 
 }

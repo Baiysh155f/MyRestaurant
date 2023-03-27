@@ -33,7 +33,7 @@ public class Cheque {
     private BigDecimal priceAverage;
     @NotNull
     private LocalDate createAt;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Employees employees;
     @ManyToMany(mappedBy = "cheques", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<MenuItem> menuItem = new ArrayList<>();

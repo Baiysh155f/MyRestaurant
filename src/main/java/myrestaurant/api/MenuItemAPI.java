@@ -75,7 +75,7 @@ public class MenuItemAPI {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/pagination")
-    public Page<MenuItem> getManuItemsPagination(@RequestParam int page,
+    public PaginationResponse getManuItemsPagination(@RequestParam int page,
                                                  @RequestParam int size) {
         return menuItemService.findMenuItemsWithPagination(page, size);
     }

@@ -59,7 +59,7 @@ public class SubCategoryAPI {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @GetMapping("/sorting")
-    public List<SubCategory> sortSubCategory() {
-        return subCategoryRepository.findAll(Sort.by("name"));
+    public List<SubCategoryResponse> sortSubCategory() {
+        return subCategoryService.findAllSorting("name");
     }
 }

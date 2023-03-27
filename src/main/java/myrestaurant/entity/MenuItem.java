@@ -64,4 +64,6 @@ public class MenuItem {
     @JoinColumn(name = "subcategory_id")
     private SubCategory subCategory;
 
+    public MenuItem(Long id, String name, String images, BigDecimal price, String description, boolean vegetarian) {
+    }
 }

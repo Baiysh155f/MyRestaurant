@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import myrestaurant.dto.request.categories.CategoryRequest;
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.categories.CategoryResponse;
+import myrestaurant.dto.response.categories.CategoryResponsePage;
+import myrestaurant.dto.response.subCategories.SubCategoryResponse;
 import myrestaurant.entity.Category;
 import myrestaurant.exceptions.NotFoundExceptionId;
 import myrestaurant.repository.CategoryRepository;
+import myrestaurant.repository.SubCategoryRepository;
 import myrestaurant.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
     @Override
     public List<CategoryResponse> getAll() {
@@ -39,9 +43,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getById(Long categoryId) {
-        return categoryRepository.findById(categoryId)
+    public CategoryResponsePage getById(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundExceptionId("This category = " + categoryId + " not found!!!"));
+        List<SubCategoryResponse> subCategoryByCategoryId =
+                subCategoryRepository.getSubCategoryByOrderByNameAsAndByCategoryId(category.getId());
+        return CategoryResponsePage.builder()
+                .name(category.getName())
+                .subCategories(subCategoryByCategoryId)
+                .build();
     }
 
     @Override
