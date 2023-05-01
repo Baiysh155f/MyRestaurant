@@ -1,6 +1,7 @@
 package myrestaurant.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,7 @@ public class StopList {
     private Long id;
     @NotEmpty
     private String reason;
+    @FutureOrPresent(message = "Date not mast be in the past...!")
     private LocalDate date;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private MenuItem menuItem;

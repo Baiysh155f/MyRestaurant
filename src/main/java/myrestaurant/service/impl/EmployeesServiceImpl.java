@@ -11,6 +11,7 @@ import myrestaurant.dto.response.employees.EmployeesResponse;
 import myrestaurant.dto.response.employees.EmployeesResponseAll;
 import myrestaurant.entity.Cheque;
 import myrestaurant.entity.Employees;
+import myrestaurant.entity.Restaurant;
 import myrestaurant.enums.Role;
 import myrestaurant.exceptions.ExistsElementException;
 import myrestaurant.exceptions.NoVacancyException;
@@ -88,14 +89,6 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public SimpleResponse register(RegisterRequest registerRequest) {
-        List<Employees> all = employeesRepository.findAll();
-        for (Employees employees : all) {
-            if (employees.getId() == 15) {
-                throw new NoVacancyException("Sorry! no place for applications");
-            }
-
-        }
-
         if (employeesRepository.existsByEmail(registerRequest.getEmail())) {
             throw new ExistsElementException(
                     String.format("Employee with email : %s is exists",
@@ -155,17 +148,24 @@ public class EmployeesServiceImpl implements EmployeesService {
     }
 
     private void valid(RegisterRequest newEmployees) {
+        if (newEmployees.getPassword().length() < 4) {
+            throw new ValidationException("Password must be minimum 4 symbol");
+        }
         int waiterAge = LocalDate.now().minusYears(newEmployees.getDateOfBirth().getYear()).getYear();
         if (newEmployees.getRole().equals(Role.WAITER)) {
             if (waiterAge < 18 || waiterAge > 30) {
                 throw new ValidationException("The age of the Whiter must not be less than 18 and more than 30");
             }
         }
-        if (newEmployees.getRole().equals(Role.CHEF) && newEmployees.getExperience() < 2) {
-            throw new ValidationException("Chef experience not less 2 years");
-        } else if (newEmployees.getRole().equals(Role.WAITER) && newEmployees.getExperience() < 1) {
-            throw new ValidationException("Waiter experience not less 1 years");
+        if (newEmployees.getRole().equals(Role.CHEF)) {
+            if (newEmployees.getExperience() < 2 || newEmployees.getExperience() > 10)
+            throw new ValidationException("Chef experience not less 2 years and must not be more than 10 years");
         }
+        if (newEmployees.getRole().equals(Role.WAITER)) {
+            if (newEmployees.getExperience() < 1 || newEmployees.getExperience() > 10)
+            throw new ValidationException("Waiter experience not less 1 years and must not be more than 10 years");
+        }
+
         int age = LocalDate.now().minusYears(newEmployees.getDateOfBirth().getYear()).getYear();
         if (newEmployees.getRole().equals(Role.CHEF)) {
             if (age < 25 || age > 45) {
@@ -185,8 +185,14 @@ public class EmployeesServiceImpl implements EmployeesService {
                     .message("Sorry we can't here heir you")
                     .build();
         } else {
-            employees.setRestaurant(restaurantRepository.findById(1L)
-                    .orElseThrow(() -> new NotFoundExceptionId(String.format("Restaurant id =  %s is not found!", 1L))));
+            Restaurant restaurant = restaurantRepository.findById(1L)
+                    .orElseThrow(() -> new NotFoundExceptionId(String.format("Restaurant id =  %s is not found!", 1L)));
+            if (restaurant.getNumberOfEmployees() == 15) {
+                throw new NoVacancyException("Sorry! no place for applications");
+            }
+            employees.setRestaurant(restaurant);
+            int i = restaurant.getNumberOfEmployees() + 1;
+            restaurant.setNumberOfEmployees(i);
             return SimpleResponse.builder()
                     .status(HttpStatus.OK)
                     .message(employees.getUsername() + " You have been successfully hired !)")

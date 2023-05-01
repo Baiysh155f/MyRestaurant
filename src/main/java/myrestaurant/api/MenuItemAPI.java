@@ -23,13 +23,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuItemAPI {
     private final MenuItemService menuItemService;
-
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
-    @GetMapping("/getAll")
-    public List<MenuItemResponse> getAll() {
+    @GetMapping
+    public List<MenuItemResponse> getAll(){
         return menuItemService.getAll();
     }
-
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF')")
     @PostMapping
     public SimpleResponse save(@RequestBody MenuItemRequest menuItemRequest) {
@@ -76,7 +73,7 @@ public class MenuItemAPI {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/pagination")
     public PaginationResponse getManuItemsPagination(@RequestParam int page,
-                                                 @RequestParam int size) {
+                                                     @RequestParam int size) {
         return menuItemService.findMenuItemsWithPagination(page, size);
     }
 }

@@ -2,7 +2,10 @@ package myrestaurant.service.impl;
 
 import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.entity.Employees;
+import myrestaurant.entity.MenuItem;
 import myrestaurant.enums.Role;
+import myrestaurant.exceptions.ExistsElementException;
+import myrestaurant.exceptions.ValidationException;
 import myrestaurant.repository.EmployeesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,12 +36,15 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public SimpleResponse saveRestaurant(RestaurantRequest restaurantRequest) {
+        if (!restaurantRepository.findAll().isEmpty()) {
+            throw new ValidationException("You mast save only 1 Restaurant");
+        }
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantRequest.getName());
         restaurant.setLocation(restaurantRequest.getLocation());
         restaurant.setRestType(restaurantRequest.getRestType());
         restaurant.setService(restaurantRequest.getService());
-        restaurant.setNumberOfEmployees(1);
+        restaurant.setNumberOfEmployees(0);
         Employees employees = employeesRepository.findByRole(Role.ADMIN)
                 .orElseThrow(() -> new NotFoundExceptionId("Not found Admin"));
         employees.setRestaurant(restaurant);

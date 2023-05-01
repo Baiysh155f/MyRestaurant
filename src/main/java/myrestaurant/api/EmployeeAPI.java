@@ -33,7 +33,7 @@ public class EmployeeAPI {
     public List<EmployeesResponseAll> getAll() {
         return employeesService.getAll();
     }
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @GetMapping("/{employeeId}")
     public EmployeesResponseAll findBYId(@PathVariable Long employeeId) {
         return employeesService.findById(employeeId);
@@ -44,14 +44,14 @@ public class EmployeeAPI {
     public SimpleResponse register(@RequestBody @Valid RegisterRequest registerRequest) {
         return employeesService.register(registerRequest);
     }
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @PostMapping("/authenticate")
     public EmployeesResponse authenticate(@RequestBody EmployeesRequest employeesRequest) {
         return employeesService.authenticate(employeesRequest);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'CHEF', 'WAITER')")
     @PutMapping("/{employeeId}")
+    @PreAuthorize("#employeeId == authentication.principal.id")
     public SimpleResponse updateEmployee(@PathVariable Long employeeId,
                                          @RequestBody RegisterRequest registerRequest) {
         return employeesService.updateEmployee(employeeId, registerRequest);

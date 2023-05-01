@@ -9,7 +9,9 @@ import myrestaurant.entity.MenuItem;
 import myrestaurant.entity.Restaurant;
 import myrestaurant.entity.StopList;
 import myrestaurant.entity.SubCategory;
+import myrestaurant.exceptions.ExistsElementException;
 import myrestaurant.exceptions.NotFoundExceptionId;
+import myrestaurant.exceptions.ValidationException;
 import myrestaurant.repository.*;
 import myrestaurant.service.MenuItemService;
 import org.springframework.data.domain.Page;
@@ -34,11 +36,14 @@ public class MenuItemServiceIml implements MenuItemService {
     private final MenuItemRepository menuItemRepository;
     private final RestaurantRepository restaurantRepository;
     private final SubCategoryRepository subCategoryRepository;
-    private final CategoryRepository categoryRepository;
-    private final StopListRepository stopListRepository;
 
     @Override
     public SimpleResponse save(MenuItemRequest menuItemRequest) {
+        for (MenuItem menuItem : menuItemRepository.findAll()) {
+            if (menuItem.getName().equals(menuItemRequest.getName())) {
+                throw new ExistsElementException("MenuItem with name : " + menuItemRequest.getName() + " is exists");
+            }
+        }
         Restaurant restaurant = restaurantRepository.findById(1L)
                 .orElseThrow(() -> new NotFoundExceptionId("Restaurant this id = 1 not found"));
         MenuItem menuItem = new MenuItem();
@@ -57,7 +62,6 @@ public class MenuItemServiceIml implements MenuItemService {
                 .message("SAVED...").build();
     }
 
-
     @Override
     public SimpleResponse update(Long menuId, MenuItemRequest menuItemRequest) {
         MenuItem menuItem = menuItemRepository.findById(menuId)
@@ -71,14 +75,6 @@ public class MenuItemServiceIml implements MenuItemService {
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)
                 .message("UPDATED...").build();
-    }
-
-    @Override
-    public List<MenuItemResponse> getAll() {
-        List<MenuItemResponse> list = new ArrayList<>();
-        list.addAll(menuItemRepository.getAllMenuItems());
-        list.addAll(menuItemRepository.getAllByStopListNull());
-        return list;
     }
 
     @Override
@@ -150,6 +146,30 @@ public class MenuItemServiceIml implements MenuItemService {
         response.setCurrentPage(allPageable.getNumber());
         response.setPageSize(allPageable.getSize());
         return response;
+    }
+
+    //    private InstructorResponse convert(Instructor instructor) {
+//        return InstructorResponse.builder()
+//                .id(instructor.getId())
+//                .firstName(instructor.getUser().getFirstName())
+//                .lastName(instructor.getUser().getLastName())
+//                .special(instructor.getSpecial())
+//                .phoneNumber(instructor.getUser().getPhoneNumber())
+//                .password(instructor.getUser().getPassword())
+//                .build();
+//    }
+//
+//    private List<InstructorResponse> convert(List<Instructor> instructors) {
+//        List<InstructorResponse> instructorResponses = new ArrayList<>();
+//        for (Instructor  instructor: instructors) {
+//            instructorResponses.add(convert(instructor));
+//        }
+//        return instructorResponses;
+//    }
+
+    @Override
+    public List<MenuItemResponse> getAll() {
+        return menuItemRepository.getAll();
     }
 
 }

@@ -7,11 +7,10 @@ import myrestaurant.dto.response.checues.ChequeResponseGrandTotal;
 import myrestaurant.dto.response.checues.EmployeesDailyTotalResponse;
 import myrestaurant.dto.response.checues.RestaurantDailyTotalChequeResponse;
 import myrestaurant.dto.response.menuItem.MenuItemsResponseForCheque;
-import myrestaurant.entity.Cheque;
-import myrestaurant.entity.Employees;
-import myrestaurant.entity.MenuItem;
-import myrestaurant.entity.Restaurant;
+import myrestaurant.entity.*;
+import myrestaurant.enums.Role;
 import myrestaurant.exceptions.NotFoundExceptionId;
+import myrestaurant.exceptions.ValidationException;
 import myrestaurant.repository.ChequeRepository;
 import myrestaurant.repository.EmployeesRepository;
 import myrestaurant.repository.MenuItemRepository;
@@ -42,12 +41,20 @@ public class ChequeServiceImpl implements ChequeService {
     public SimpleResponse save(Long employeeId, ChequeRequest chequeRequest) {
         Employees employees = employeesRepository.findById(employeeId)
                 .orElseThrow(() -> new NotFoundExceptionId("Employee id = " + employeeId + " mot found..."));
+        if (employees.getRole().equals(Role.ADMIN) || employees.getRole().equals(Role.CHEF)){
+            throw new ValidationException("Only the waiter can take orders");
+        }
         List<MenuItem> allById = menuItemRepository.findAllById(chequeRequest.getMenuItemsId());
         Cheque cheque = new Cheque();
         cheque.setCreateAt(LocalDate.now());
         cheque.setEmployees(employees);
         BigDecimal average = new BigDecimal(0);
         for (MenuItem menuItem : allById) {
+            for (StopList stopList : menuItem.getStopList()) {
+                if (stopList.getDate().equals(LocalDate.now())){
+                    throw new NotFoundExceptionId("Bizde bul tamak jok !");
+                }
+            }
             menuItem.getCheques().add(cheque);
             average = average.add(menuItem.getPrice());
         }

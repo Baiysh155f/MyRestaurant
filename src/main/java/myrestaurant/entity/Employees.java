@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Restorant
@@ -21,7 +22,8 @@ import java.util.List;
  * macbook_pro
  **/
 @Entity
-@Table
+@Table(name = "Employees")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor

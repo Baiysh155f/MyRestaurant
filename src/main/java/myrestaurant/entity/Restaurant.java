@@ -35,7 +35,6 @@ public class Restaurant {
     private String location;
     @NotEmpty
     private String restType;
-    @NotNull
     private int numberOfEmployees;
     @NotNull
     private int service;

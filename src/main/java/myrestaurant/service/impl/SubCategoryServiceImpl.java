@@ -6,7 +6,9 @@ import myrestaurant.dto.response.SimpleResponse;
 import myrestaurant.dto.response.categories.CategoryResponsePage;
 import myrestaurant.dto.response.subCategories.SubCategoryResponse;
 import myrestaurant.entity.Category;
+import myrestaurant.entity.MenuItem;
 import myrestaurant.entity.SubCategory;
+import myrestaurant.exceptions.ExistsElementException;
 import myrestaurant.exceptions.NotFoundExceptionId;
 import myrestaurant.repository.CategoryRepository;
 import myrestaurant.repository.SubCategoryRepository;
@@ -35,6 +37,11 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
     @Override
     public SimpleResponse save(SubCategoryRequest subCategory) {
+        for (SubCategory subCategory1 : subCategoryRepository.findAll()) {
+            if (subCategory1.getName().equals(subCategory.getName())){
+                throw new ExistsElementException("MenuItem with name : "+subCategory.getName()+" is exists");
+            }
+        }
         Category category = categoryRepository.findById(subCategory.getCategoryId())
                 .orElseThrow(() -> new NotFoundExceptionId("This category = " + subCategory.getCategoryId() + " not found!!!"));
         SubCategory subCategory1 = new SubCategory();

@@ -19,8 +19,7 @@ public interface MenuItemService {
 
 
     SimpleResponse update(Long menuId, MenuItemRequest menuItemRequest);
-
-    List<MenuItemResponse> getAll();
+    
 
     SimpleResponse delete(Long menuId);
 
@@ -33,4 +32,6 @@ public interface MenuItemService {
     List<MenuItemResponse> findMenuItemByVegetarianTrueOrFalse(Boolean isTrue);
 
     PaginationResponse findMenuItemsWithPagination(int offset, int pageSize);
+
+    List<MenuItemResponse> getAll();
 }

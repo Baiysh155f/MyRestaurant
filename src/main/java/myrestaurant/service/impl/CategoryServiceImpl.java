@@ -8,6 +8,8 @@ import myrestaurant.dto.response.categories.CategoryResponse;
 import myrestaurant.dto.response.categories.CategoryResponsePage;
 import myrestaurant.dto.response.subCategories.SubCategoryResponse;
 import myrestaurant.entity.Category;
+import myrestaurant.entity.MenuItem;
+import myrestaurant.exceptions.ExistsElementException;
 import myrestaurant.exceptions.NotFoundExceptionId;
 import myrestaurant.repository.CategoryRepository;
 import myrestaurant.repository.SubCategoryRepository;
@@ -56,6 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public SimpleResponse saveCategory(CategoryRequest category) {
+        for (Category category1 : categoryRepository.findAll()) {
+            if (category1.getName().equals(category.getName())){
+                throw new ExistsElementException("MenuItem with name : "+category.getName()+" is exists");
+            }
+        }
         Category category1 = new Category();
         category1.setName(category.getName());
         categoryRepository.save(category1);
